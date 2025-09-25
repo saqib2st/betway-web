@@ -28,31 +28,46 @@
     }
   </style>
   <script>
-    function openApp() {
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isIOS = /iphone|ipad|ipod/.test(userAgent);
-      const isAndroid = /android/.test(userAgent);
-
-      const universalLink = "https://betway-web.vercel.app/open"; // Universal/App link
-      const appStoreURL = "https://apps.apple.com/app/id1552348455";
-      const playStoreURL = "https://play.google.com/store/apps/details?id=com.betway.scores.android";
-
-      const fallback = () => {
-        if (isIOS) {
-          window.location.href = appStoreURL;
-        } else if (isAndroid) {
-          window.location.href = playStoreURL;
-        }
-      };
-
-      window.location.href = universalLink;
-
-      setTimeout(() => {
-        if (!document.hidden) {
-          fallback();
-        }
-      }, 1200);
+    function openAppOrRedirect() {
+  const universalLink = "https://www.betwayscores.com/openApp";
+  const appStoreLink = "https://apps.apple.com/app/id1552348455";
+  const playStoreLink = "https://play.google.com/store/apps/details?id=com.betway.scores.android";
+  
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(userAgent);
+  const isAndroid = /android/.test(userAgent);
+  
+  const fallback = () => {
+    if (isIOS) {
+      window.location.href = appStoreLink;
+    } else if (isAndroid) {
+      window.location.href = playStoreLink;
+    } else {
+      window.open("https://www.betwayscores.com", "_blank");
     }
+  };
+
+  if (isIOS) {
+    // iOS tries universal link directly
+    window.location.href = universalLink;
+    
+    // Fallback if app not installed - using document.hidden like your working code
+    setTimeout(() => {
+      if (!document.hidden) fallback();
+    }, 1200);
+  } else if (isAndroid) {
+    // Android tries universal link directly
+    window.location.href = universalLink;
+    
+    // Fallback if app not installed - using document.hidden like your working code
+    setTimeout(() => {
+      if (!document.hidden) fallback();
+    }, 1200);
+  } else {
+    // Desktop or others
+    fallback();
+  }
+}
   </script>
 </head>
 <body>
